@@ -1,0 +1,109 @@
+<h1>Cadastro Imagens Galeria</h1>
+<div id="msg" [innerHTML]="message"></div>
+
+<div id="listagem" *ngIf="showListForm">
+  <button type="button" class="btn btn-primary" (click)="newRegister()">
+    <i class="far fa-file-image"></i> Cadastrar
+  </button>
+  <br />
+  <br />
+  <div id="galeria-listagem">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover table-sm">
+        <thead class="table-dark">
+          <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>Imagem</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let list of arrList">
+            <td>{{ list.id_galeria }}</td>
+            <td>{{ list.titulo }}</td>
+            <td>
+              <img
+                [src]="urlApi + '/' + list.caminho"
+                class="img-fluid"
+                width="30%"
+                alt="Responsive image"
+              />
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="edit(list.id_galeria)">
+                Editar
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="delete(list.id_galeria)">
+                Excluir
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="formulario" *ngIf="!showListForm">
+  <div class="row">
+    <div class="col-sm">
+      <form [formGroup]="formGalery" (submit)="onSubmit()">
+        <div class="form-group">
+          <label for="id">Código</label>
+          <input
+            type="number"
+            class="form-control"
+            id="id_galeria"
+            formControlName="id_galeria"
+          />
+        </div>
+
+        <div class="form-group mt-4 mb-4">
+          <label for="nomeBoot">Título</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="titulo"
+            placeholder="Informe o Título"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlFile1">Imagem</label>
+          <input
+            type="file"
+            class="form-control-file"
+            (change)="uploadImage($event)"
+          />
+        </div>
+
+        <div class="form-group" *ngIf="imageUrl">
+          <img
+            [src]="imageUrl"
+            id="imgPrevia"
+            name="imgPrevia"
+            class="img-fluid"
+            alt="..."
+            width="300"
+          />
+        </div>
+
+        <div
+          class="form-inline mt-4"
+          [ngStyle]="{ display: 'flex', gap: '10px' }"
+        >
+          <button type="submit" class="btn btn-primary">
+            {{ showBtnEdit ? "Editar" : "Salvar" }}
+          </button>
+          <button type="button" class="btn btn-primary" (click)="backList()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
